@@ -17,6 +17,10 @@
             <span id="email-error" style="color:red;"></span>
             <br>
 
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password">
+            <span id="password-error" style="color: red;"></span><br>
+
             <input type="submit" value="Submit">
         </form>
 
@@ -30,6 +34,8 @@
                     event.preventDefault(); 
                     var nama = $("#nama").val();
                     var email = $("#email").val();
+                    var password = $("#password").val();
+
                     var valid = true;
 
                     if (nama === "") {
@@ -44,6 +50,14 @@
                         valid = false;
                     } else {
                         $("#email-error").text("");
+                    }
+
+                    if (password === "") {
+                        $("#password-error").text("Password harus diisi.");
+                    } else if (password.length < 8) {
+                        $("#password-error").text("Password tidak boleh kurang dari 8 kata.");
+                    } else {
+                        $("#password-error").text("");
                     }
 
                     if (valid) {
