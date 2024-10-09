@@ -23,7 +23,7 @@ $text = 'I like apple pie.';
 $new_text = preg_replace($pattern, $replacement, $text);
 echo $new_text;
 
-$pattern = '/go*d/'; // Cocokkan "god", "good", "gooood", dll.
+$pattern = '/go?d/'; // Cocokkan "god", "good", "gooood", dll.
 $text = 'god is good.';
 
 if (preg_match($pattern, $text, $matches)) {
