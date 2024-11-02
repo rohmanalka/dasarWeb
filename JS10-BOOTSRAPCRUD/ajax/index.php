@@ -33,6 +33,7 @@ include 'auth.php';
                             <label>Nama</label>
                             <input type="hidden" name="id" id="id">
                             <input type="text" name="nama" id="nama" class="form-control" required="true">
+                            <p class="text-danger" id="err_nama"></p>
                         </div>
                     </div>
 
@@ -41,6 +42,7 @@ include 'auth.php';
                             <label>Jenis Kelamin</label><br>
                             <input type="radio" name="jenis_kelamin" id="jenkel1" value="Laki-laki" required="true"> Laki-laki
                             <input type="radio" name="jenis_kelamin" id="jenkel2" value="Perempuan"> Perempuan
+                            <p class="text-danger" id="err_jenis_kelamin"></p>
                         </div>
                     </div>
                 </div>
@@ -48,11 +50,13 @@ include 'auth.php';
                 <div class="form-group">
                     <label>Alamat</label>
                     <textarea name="alamat" id="alamat" class="form-control" required="true"></textarea>
+                    <p class="text-danger" id="err_alamat"></p>
                 </div>
 
                 <div class="form-group">
                     <label>No Telepon</label>
                     <input type="number" name="no_telp" id="no_telp" class="form-control" required="true">
+                    <p class="text-danger" id="err_no_telp"></p>
                 </div>
 
                 <div class="form-group">
@@ -82,6 +86,62 @@ include 'auth.php';
                     }
                 });
                 $('.data').load('data.php');
+            });
+            $('#simpan').click(function() {
+            // Mengambil nilai dari setiap input dalam form
+            var data = $('.form-data').serialize();
+            var jenkel1 = document.getElementById('jenkel1').value;
+            var jenkel2 = document.getElementById('jenkel2').value;
+            var nama = document.getElementById('nama').value;
+            var alamat = document.getElementById('alamat').value;
+            var no_telp = document.getElementById('no_telp').value;
+
+            // Validasi input nama
+            if (!nama) {
+                document.getElementById('err_nama').innerHTML = "Nama Harus Diisi";
+            } else {
+                document.getElementById('err_nama').innerHTML = "";
+            }
+
+            // Validasi input alamat
+            if (!alamat) {
+                document.getElementById('err_alamat').innerHTML = "Alamat Harus Diisi";
+            } else {
+                document.getElementById('err_alamat').innerHTML = "";
+            }
+
+            // Validasi input jenis kelamin
+            if (document.getElementById('jenkel1').checked==false && document.getElementById('jenkel2').checked==false) {
+                document.getElementById('err_jenis_kelamin').innerHTML = "Jenis Kelamin Harus Dipilih";
+            } else {
+            document.getElementById('err_jenis_kelamin').innerHTML = "";
+            }
+  
+
+            // Validasi input nomor telepon
+            if (!no_telp) {
+                document.getElementById('err_no_telp').innerHTML = "No Telepon Harus Diisi";
+            } else {
+                document.getElementById('err_no_telp').innerHTML = "";
+            }
+
+            // Jika semua input valid, kirim data ke server
+            if (nama!="" && alamat!="" && (document.getElementById('jenkel1').checked==true || document.getElementById('jenkel2').checked==true) && no_telp!="") {
+                $.ajax({
+                    type: 'POST',
+                    url: 'form_action.php',
+                    data: data,
+                    success: function() {
+                        // Tampilkan data yang baru saja ditambahkan
+                        $('.data').load("data.php");
+                        // Kosongkan formulir
+                        document.getElementById("id").value = "";
+                        document.getElementById("form-data").reset();
+                    }, error: function(response) {
+                    console.log(response.responseText);
+                }
+                });
+            }
             });
         </script>
     </body>
