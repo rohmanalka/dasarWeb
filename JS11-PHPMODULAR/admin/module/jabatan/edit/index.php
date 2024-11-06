@@ -18,7 +18,7 @@
                     <h5>Form Edit Jabatan</h5>
                 </div>
                 <div class="card-body">
-                    <form action="fungsi/edit.php?jabatanedit" method="POST">
+                    <form action="fungsi/edit.php?jabatan=edit" method="POST">
                         <input type="hidden" value="<?php echo $row['id']; ?>" name="id">
                         <div class="mb-3">
                             <label for="jabatan" class="form-label">Jabatan</label>
