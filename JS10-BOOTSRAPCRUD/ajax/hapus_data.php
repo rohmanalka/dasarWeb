@@ -1,7 +1,7 @@
 <?php
     session_start();
     include 'koneksi.php';
-    // include 'csrf.php';
+    include 'csrf.php';
 
     $id = $_POST['id'];
 

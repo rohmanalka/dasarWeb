@@ -6,3 +6,4 @@
 
     //buat koneksi
     $db1 = new mysqli(HOST, USER, PASS, DB1);
+?>
