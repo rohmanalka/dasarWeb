@@ -19,8 +19,14 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="AdminLTE/plugins/fontawesome-free/css/all.min.css">
+  <!-- DataTables -->
+  <link rel="stylesheet" href="adminlte/plugins/datatablesbs4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="adminlte/plugins/datatablesresponsive/css/responsive.bootstrap4.min.css">
+  <link rel="stylesheet" href="adminlte/plugins/datatablesbuttons/css/buttons.bootstrap4.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="AdminLTE/dist/css/adminlte.min.css">
+  <!-- jQuery -->
+  <script src="AdminLTE/plugins/jquery/jquery.min.js"></script>
 </head>
 <body class="hold-transition sidebar-mini">
 <!-- Site wrapper -->
@@ -69,10 +75,25 @@
 </div>
 <!-- ./wrapper -->
 
-<!-- jQuery -->
-<script src="AdminLTE/plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
 <script src="AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- jQuery Validation -->
+<script src="adminlte/plugins/jquery-validation/jquery.validate.min.js"></script>
+<script src="adminlte/plugins/jquery-validation/additional-methods.min.js"></script>
+<script src="adminlte/plugins/jquery-validation/localization/messages_id.min.js"></script>
+<!-- DataTables & Plugins -->
+<script src="adminlte/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="adminlte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="adminlte/plugins/datatablesresponsive/js/dataTables.responsive.min.js"></script>
+<script src="adminlte/plugins/datatablesresponsive/js/responsive.bootstrap4.min.js"></script>
+<script src="adminlte/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="adminlte/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="adminlte/plugins/jszip/jszip.min.js"></script>
+<script src="adminlte/plugins/pdfmake/pdfmake.min.js"></script>
+<script src="adminlte/plugins/pdfmake/vfs_fonts.js"></script>
+<script src="adminlte/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="adminlte/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="adminlte/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 <!-- AdminLTE App -->
 <script src="AdminLTE/dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
