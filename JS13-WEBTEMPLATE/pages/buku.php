@@ -1,3 +1,9 @@
+<?php
+require_once __DIR__ . '/../lib/Connection.php';
+
+$kategori = getKategori();
+?>
+
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
@@ -31,6 +37,7 @@
                         <th>No</th>
                         <th>Kode Buku</th>
                         <th>Nama Buku</th>
+                        <th>Kategori</th>
                         <th>Jumlah</th>
                         <th>Deskripsi</th>
                         <th>Gambar</th>
@@ -43,15 +50,9 @@
         </div>
     </div>
 </section>
+<!-- Modal Form -->
 <div class="modal fade" id="form-data" style="display: none;" aria-hidden="true">
-    <form action="action/bukuAction.php?act=save" method="post" id="form-tambah">
-        <!-- Ukuran Modal
-modal-sm : Modal ukuran kecil
-modal-md : Modal ukuran sedang
-modal-lg : Modal ukuran besar
-modal-xl : Modal ukuran sangat besar
-penerapan setelah class modal-dialog seperti di bawah
--->
+    <form action="action/bukuAction.php?act=save" method="post" id="form-tambah" enctype="multipart/form-data">
         <div class="modal-dialog modal-md">
             <div class="modal-content">
                 <div class="modal-header">
@@ -60,13 +61,25 @@ penerapan setelah class modal-dialog seperti di bawah
                 <div class="modal-body">
                     <div class="form-group">
                         <label>Kode Buku</label>
-                        <input type="text" class="form-control" name="buku_kode"
-                            id="buku_kode">
+                        <input type="text" class="form-control" name="buku_kode" id="buku_kode">
                     </div>
                     <div class="form-group">
                         <label>Nama Buku</label>
-                        <input type="text" class="form-control" name="buku_nama"
-                            id="buku_nama">
+                        <input type="text" class="form-control" name="buku_nama" id="buku_nama">
+                    </div>
+                    <div class="form-group">
+                        <label>Kategori</label>
+                        <select id="kategori_id" name="kategori_id" class="form-control">
+                            <?php if (!empty($kategori)): ?>
+                                <?php foreach ($kategori as $k): ?>
+                                    <option value="<?= htmlspecialchars($k['kategori_id']); ?>">
+                                        <?= htmlspecialchars($k['kategori_nama']); ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <option value="">Kategori Tidak Ditemukan</option>
+                            <?php endif; ?>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label>Jumlah</label>
@@ -78,11 +91,11 @@ penerapan setelah class modal-dialog seperti di bawah
                     </div>
                     <div class="form-group">
                         <label>Gambar</label>
-                        <input type="text" class="form-control" name="gambar" id="gambar">
+                        <input type="url" class="form-control" name="gambar" id="gambar" placeholder="Masukkan URL gambar">
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-default" datadismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
                     <button type="submit" class="btn btn-primary">Simpan</button>
                 </div>
             </div>
@@ -91,13 +104,14 @@ penerapan setelah class modal-dialog seperti di bawah
 </div>
 <script>
     function tambahData() {
-    $('#form-data').modal('show');
-    $('#form-tambah').attr('action', 'action/bukuAction.php?act=save');
-    $('#buku_kode').val('');
-    $('#buku_nama').val('');
-    $('#jumlah').val('');
-    $('#deskripsi').val('');
-    $('#gambar').val('');
+        $('#form-data').modal('show');
+        $('#form-tambah').attr('action', 'action/bukuAction.php?act=save');
+        $('#buku_kode').val('');
+        $('#buku_nama').val('');
+        $('#kategori_id').val('');
+        $('#jumlah').val('');
+        $('#deskripsi').val('');
+        $('#gambar').val('');
     }
 
     function editData(id) {
@@ -110,9 +124,10 @@ penerapan setelah class modal-dialog seperti di bawah
                 $('#form-tambah').attr('action', 'action/bukuAction.php?act=update&id=' + id);
                 $('#buku_kode').val(data.buku_kode);
                 $('#buku_nama').val(data.buku_nama);
-                $('#jumlah').val(data.jumlah); // Tambahkan ini
-                $('#deskripsi').val(data.deskripsi); // Tambahkan ini
-                $('#gambar').val(data.gambar); // Tambahkan ini
+                $('#kategori_id').val(data.kategori_id).trigger('change');
+                $('#jumlah').val(data.jumlah);
+                $('#deskripsi').val(data.deskripsi || '');
+                $('#gambar').val(data.gambar);
             }
         });
     }
@@ -154,55 +169,66 @@ penerapan setelah class modal-dialog seperti di bawah
             });
         }
     }
+
     var tabelData;
     $(document).ready(function() {
         tabelData = $('#table-data').DataTable({
             ajax: 'action/bukuAction.php?act=load',
         });
         $('#form-tambah').validate({
-        rules: {
-            buku_kode: {
-                required: true,
-                minlength: 3
+            rules: {
+                buku_kode: {
+                    required: true
+                },
+                buku_nama: {
+                    required: true
+                },
+                kategori_id: {
+                    required: true
+                },
+                jumlah: {
+                    required: true,
+                    number: true,
+                    min: 1
+                },
+                deskripsi: {
+                    required: true
+                },
+                gambar: {
+                    url: true
+                },
             },
-            buku_nama: {
-                required: true,
-                minlength: 5
+            messages: {
+                kategori_id: {
+                    required: "Kategori harus dipilih."
+                },
+                deskripsi: {
+                    required: "Deskripsi tidak boleh kosong."
+                },
             },
-            jumlah: {
-                required: true,
-                digits: true
-            },
-            deskripsi: {
-                required : true,
-                minlength: 10
-            },
-            gambar: {
-                required: true,
-                url: true // Jika gambar adalah URL
-            }
-        },
             errorElement: 'span',
             errorPlacement: function(error, element) {
                 error.addClass('invalid-feedback');
                 element.closest('.form-group').append(error);
             },
-            highlight: function(element, errorClass, validClass) {
+            highlight: function(element) {
                 $(element).addClass('is-invalid');
             },
-            unhighlight: function(element, errorClass, validClass) {
+            unhighlight: function(element) {
                 $(element).removeClass('is-invalid');
             },
             submitHandler: function(form) {
                 $.ajax({
                     url: $(form).attr('action'),
                     method: 'post',
-                    data: $(form).serialize(),
+                    data: new FormData(form),
+                    processData: false,
+                    contentType: false,
                     success: function(response) {
                         var result = JSON.parse(response);
                         if (result.status) {
                             $('#form-data').modal('hide');
-                            tabelData.ajax.reload(); // reload data tabel
+                            tabelData.ajax.reload();
                         } else {
                             alert(result.message);
                         }

@@ -8,4 +8,3 @@ function antiSqlInjection($data)
     $data = addslashes($data);
     return $data;
 }
-?>
