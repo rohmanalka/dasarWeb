@@ -16,20 +16,21 @@ if ($act == 'load') {
     $result = [];
     $i = 1;
 
-    while ($row = $data->fetch_assoc()) {
+    while ($row = sqlsrv_fetch_array($data, SQLSRV_FETCH_ASSOC)) {
         $result['data'][] = [
             $i,
-            $row['buku_kode'],
-            $row['buku_nama'],
-            $row['kategori_id'],
-            $row['jumlah'],
-            $row['deskripsi'],
-            '<img src="' . $row['gambar'] . '" alt="Gambar Buku" style="width: 100px; height: auto;">',
+            htmlspecialchars($row['buku_kode']),
+            htmlspecialchars($row['buku_nama']),
+            htmlspecialchars($row['kategori_id']),
+            htmlspecialchars($row['jumlah']),
+            htmlspecialchars($row['deskripsi']),
+            '<img src="' . htmlspecialchars($row['gambar']) . '" alt="Gambar Buku" style="width: 100px; height: auto;">',
             '<button class="btn btn-sm btn-warning" onclick="editData(' . $row['buku_id'] . ')"><i class="fa fa-edit"></i></button>
              <button class="btn btn-sm btn-danger" onclick="deleteData(' . $row['buku_id'] . ')"><i class="fa fa-trash"></i></button>'
         ];
         $i++;
     }
+
     echo json_encode($result);
 }
 // if ($act == 'load') {
